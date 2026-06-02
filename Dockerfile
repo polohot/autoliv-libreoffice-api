@@ -22,9 +22,12 @@ RUN conda config --set ssl_verify false && \
 # Copy application code
 COPY app.py util.py ./
 
+# ⬇️ ADD THIS — Link LibreOffice UNO into conda env
+RUN ln -s /usr/lib/python3/dist-packages/uno.py /opt/conda/envs/autoliv-libreoffice-api/lib/python3.12/ && \
+    ln -s /usr/lib/python3/dist-packages/unohelper.py /opt/conda/envs/autoliv-libreoffice-api/lib/python3.12/
+
 # Expose the API port
 EXPOSE 8000
 
 # Ensure the conda environment is activated when running the app
-# We use uvicorn to run the FastAPI app on port 8000
 CMD ["conda", "run", "--no-capture-output", "-n", "autoliv-libreoffice-api", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

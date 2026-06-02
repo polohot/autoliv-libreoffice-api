@@ -31,6 +31,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Autoliv LibreOffice API", lifespan=lifespan)
 
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
+
 def cleanup_files(*file_paths):
     """Deletes temporary files after the response is sent."""
     for path in file_paths:
