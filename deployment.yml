@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: alv-libreoffice-api-deploy
+endpoint_name: autoliv-libreoffice-api-endpoint
+environment:
+  image: meuwbidsdevmlwcr.azurecr.io/autoliv-libreoffice-api:v1
+  inference_config:
+    liveness_route:
+      port: 8000
+      path: /health
+    readiness_route:
+      port: 8000
+      path: /health
+    scoring_route:
+      port: 8000
+      path: /
+instance_type: Standard_DS2_v2
+instance_count: 1

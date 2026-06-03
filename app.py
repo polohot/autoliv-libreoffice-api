@@ -45,7 +45,7 @@ def cleanup_files(*file_paths):
                 print(f"Failed to delete {path}: {e}")
 
 @app.post("/convert")
-async def convert_file(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+def convert_file(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     ext = os.path.splitext(file.filename)[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=400, detail=f"Unsupported file type. Allowed: {ALLOWED_EXTENSIONS}")
@@ -57,7 +57,7 @@ async def convert_file(background_tasks: BackgroundTasks, file: UploadFile = Fil
 
     # Save uploaded file to disk
     with open(input_path, "wb") as buffer:
-        buffer.write(await file.read())
+        buffer.write(file.file.read())
 
     # Convert
     success = convert_to_pdf(input_path, output_path)
